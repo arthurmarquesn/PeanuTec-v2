@@ -1,0 +1,505 @@
+@import "tailwindcss";
+
+:root {
+  /*
+   * =========================================================
+   * PeanuTec Brand
+   * =========================================================
+   */
+
+  --pt-color-brand-950: #1f1713;
+  --pt-color-brand-900: #2f2520;
+  --pt-color-brand-800: #44352e;
+  --pt-color-brand-700: #58443a;
+
+  --pt-color-orange-800: #b9410a;
+  --pt-color-orange-700: #d84d0d;
+  --pt-color-orange-600: #ed5d12;
+  --pt-color-orange-500: #f36f21;
+  --pt-color-orange-400: #ff873f;
+  --pt-color-orange-200: #ffd2b5;
+  --pt-color-orange-100: #ffe7d7;
+  --pt-color-orange-50: #fff4ed;
+
+  /*
+   * =========================================================
+   * Agricultural / semantic colors
+   * =========================================================
+   */
+
+  --pt-color-leaf-700: #39734a;
+  --pt-color-leaf-600: #4a865a;
+  --pt-color-leaf-100: #e6f2e9;
+
+  --pt-color-earth-800: #604536;
+  --pt-color-earth-700: #765646;
+  --pt-color-earth-100: #efe3dc;
+
+  --pt-color-attention-700: #986116;
+  --pt-color-attention-100: #fbefd2;
+
+  --pt-color-critical-700: #9a3d32;
+  --pt-color-critical-100: #f5deda;
+
+  --pt-color-info-700: #365f7c;
+  --pt-color-info-100: #e1edf3;
+
+  /*
+   * =========================================================
+   * Neutral structure
+   * =========================================================
+   */
+
+  --pt-color-structure-950: #2f2520;
+  --pt-color-structure-900: #3a2f29;
+  --pt-color-structure-800: #493c35;
+  --pt-color-structure-700: #675951;
+  --pt-color-structure-600: #796b63;
+  --pt-color-structure-500: #92857d;
+  --pt-color-structure-400: #aca098;
+  --pt-color-structure-300: #cbc1bb;
+  --pt-color-structure-200: #dfd7d2;
+  --pt-color-structure-100: #f0ebe8;
+
+  /*
+   * =========================================================
+   * Surfaces
+   * =========================================================
+   */
+
+  --pt-color-field-50: #fff9f5;
+  --pt-color-field-100: #f8ede6;
+
+  --pt-color-surface: #fffdfa;
+  --pt-color-surface-muted: #f7efe9;
+  --pt-color-surface-orange: #fff4ed;
+
+  /* =========================================================
+ * Radius
+ * ========================================================= */
+
+--pt-radius-xs: 0.5rem;
+--pt-radius-sm: 0.75rem;
+--pt-radius-md: 0.875rem;
+--pt-radius-lg: 1.125rem;
+--pt-radius-xl: 1.375rem;
+--pt-radius-2xl: 1.75rem;
+--pt-radius-pill: 999px;
+
+/* =========================================================
+ * Shadows
+ * ========================================================= */
+
+--pt-shadow-card:
+  0 1px 2px rgba(47, 37, 32, 0.035),
+  0 4px 12px rgba(47, 37, 32, 0.035);
+
+--pt-shadow-card-hover:
+  0 2px 5px rgba(47, 37, 32, 0.04),
+  0 12px 30px rgba(47, 37, 32, 0.075);
+
+--pt-shadow-floating:
+  0 18px 50px rgba(47, 37, 32, 0.10);
+
+--pt-shadow-orange:
+  0 8px 22px rgba(243, 111, 33, 0.20);
+  /*
+   * =========================================================
+   * Borders
+   * =========================================================
+   */
+
+  --pt-border-subtle: 1px solid rgba(47, 37, 32, 0.11);
+  --pt-border-medium: 1px solid rgba(47, 37, 32, 0.18);
+
+  /*
+   * =========================================================
+   * Application
+   * =========================================================
+   */
+
+  --background: var(--pt-color-field-50);
+  --foreground: var(--pt-color-structure-950);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--background);
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+::selection {
+  background: var(--pt-color-orange-200);
+  color: var(--pt-color-brand-950);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+input,
+select,
+textarea {
+  color: var(--pt-color-structure-950);
+}
+
+/*
+ * =========================================================
+ * Layout
+ * =========================================================
+ */
+
+.pt-page-shell {
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(243, 111, 33, 0.045),
+      transparent 26rem
+    ),
+    var(--pt-color-field-50);
+}
+
+.pt-page-header {
+  border-bottom: 1px solid rgba(47, 37, 32, 0.1);
+  background: rgba(255, 249, 245, 0.92);
+  backdrop-filter: blur(14px);
+}
+
+/*
+ * =========================================================
+ * Cards
+ * =========================================================
+ */
+
+.pt-card {
+  border: 1px solid rgba(47, 37, 32, 0.09);
+  border-radius: var(--pt-radius-xl);
+  background: var(--pt-color-surface);
+  box-shadow: var(--pt-shadow-card);
+
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.pt-card-muted {
+  border: 1px solid rgba(47, 37, 32, 0.08);
+  border-radius: var(--pt-radius-xl);
+  background: var(--pt-color-surface-muted);
+}
+
+.pt-card-interactive:hover {
+  border-color: rgba(47, 37, 32, 0.17);
+  box-shadow: var(--pt-shadow-card-hover);
+  transform: translateY(-1px);
+}
+
+/*
+ * =========================================================
+ * Typography
+ * =========================================================
+ */
+
+.pt-section-title {
+  color: var(--pt-color-structure-950);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.pt-section-subtitle {
+  color: var(--pt-color-structure-700);
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+
+.pt-eyebrow {
+  color: var(--pt-color-orange-700);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/*
+ * =========================================================
+ * Forms
+ * =========================================================
+ */
+
+.pt-label {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: var(--pt-color-structure-800);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.pt-input {
+  height: 2.875rem;
+  width: 100%;
+
+  border-radius: var(--pt-radius-md);
+  border: 1px solid rgba(47, 37, 32, 0.14);
+
+  background: #ffffff;
+
+  padding: 0 0.9rem;
+
+  color: var(--pt-color-structure-950);
+
+  outline: none;
+
+  transition:
+    border-color 140ms ease,
+    box-shadow 140ms ease,
+    background 140ms ease;
+}
+
+.pt-input:hover {
+  border-color: rgba(47, 37, 32, 0.24);
+}
+
+.pt-input:focus {
+  border-color: var(--pt-color-orange-500);
+
+  box-shadow:
+    0 0 0 3px rgba(243, 111, 33, 0.10);
+}
+
+.pt-textarea {
+  min-height: 6rem;
+  width: 100%;
+  resize: vertical;
+  border-radius: var(--pt-radius-md);
+  border: 1px solid rgba(47, 37, 32, 0.17);
+  background: #ffffff;
+  padding: 0.8rem 0.85rem;
+  color: var(--pt-color-structure-950);
+  outline: none;
+  transition:
+    border-color 140ms ease,
+    box-shadow 140ms ease;
+}
+
+.pt-textarea:hover {
+  border-color: rgba(47, 37, 32, 0.26);
+}
+
+.pt-textarea:focus {
+  border-color: var(--pt-color-orange-500);
+  box-shadow: 0 0 0 3px rgba(243, 111, 33, 0.13);
+}
+
+/*
+ * =========================================================
+ * Buttons
+ * =========================================================
+ */
+
+.pt-button-primary {
+  display: inline-flex;
+  min-height: 2.625rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  border: 0;
+  border-radius: var(--pt-radius-md);
+
+  background: var(--pt-color-orange-500);
+
+  padding: 0 1rem;
+
+  color: #ffffff;
+
+  font-size: 0.875rem;
+  font-weight: 700;
+
+  transition:
+    background 140ms ease,
+    box-shadow 140ms ease,
+    transform 140ms ease;
+}
+
+.pt-button-primary:hover {
+  background: var(--pt-color-orange-600);
+  box-shadow: var(--pt-shadow-orange);
+}
+
+.pt-button-primary:active {
+  transform: translateY(1px);
+}
+
+.pt-button-secondary {
+  display: inline-flex;
+  min-height: 2.625rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  border-radius: var(--pt-radius-md);
+  border: 1px solid rgba(47, 37, 32, 0.17);
+
+  background: var(--pt-color-surface);
+
+  padding: 0 1rem;
+
+  color: var(--pt-color-brand-900);
+
+  font-size: 0.875rem;
+  font-weight: 700;
+
+  transition:
+    background 140ms ease,
+    border-color 140ms ease;
+}
+
+.pt-button-secondary:hover {
+  border-color: rgba(47, 37, 32, 0.28);
+  background: var(--pt-color-orange-50);
+}
+
+.pt-button-danger {
+  display: inline-flex;
+  min-height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: var(--pt-radius-md);
+
+  color: var(--pt-color-critical-700);
+
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+/*
+ * =========================================================
+ * Badges
+ * =========================================================
+ */
+
+.pt-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: var(--pt-radius-sm);
+  border: 1px solid transparent;
+
+  padding: 0.3rem 0.55rem;
+
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.pt-badge-success {
+  border-color: rgba(57, 115, 74, 0.24);
+  background: var(--pt-color-leaf-100);
+  color: var(--pt-color-leaf-700);
+}
+
+.pt-badge-warning {
+  border-color: rgba(152, 97, 22, 0.24);
+  background: var(--pt-color-attention-100);
+  color: var(--pt-color-attention-700);
+}
+
+.pt-badge-danger {
+  border-color: rgba(154, 61, 50, 0.24);
+  background: var(--pt-color-critical-100);
+  color: var(--pt-color-critical-700);
+}
+
+.pt-badge-info {
+  border-color: rgba(54, 95, 124, 0.24);
+  background: var(--pt-color-info-100);
+  color: var(--pt-color-info-700);
+}
+
+.pt-badge-neutral {
+  border-color: rgba(47, 37, 32, 0.12);
+  background: var(--pt-color-structure-100);
+  color: var(--pt-color-structure-700);
+}
+
+/*
+ * =========================================================
+ * States
+ * =========================================================
+ */
+
+.pt-empty-state {
+  border: 1px dashed rgba(47, 37, 32, 0.22);
+  border-radius: var(--pt-radius-lg);
+
+  background: var(--pt-color-surface);
+
+  padding: 1.25rem;
+
+  color: var(--pt-color-structure-700);
+
+  text-align: center;
+}
+
+.pt-divider {
+  height: 1px;
+  background: rgba(47, 37, 32, 0.1);
+}
+
+/*
+ * =========================================================
+ * Scrollbar
+ * =========================================================
+ */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: rgba(47, 37, 32, 0.23);
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(47, 37, 32, 0.35);
+  background-clip: padding-box;
+}

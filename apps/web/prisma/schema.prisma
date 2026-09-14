@@ -1,0 +1,220 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Product {
+  id                 String   @id @default(cuid())
+  name               String
+  productType        String   @map("product_type")
+  activeIngredient   String?  @map("active_ingredient")
+  mainTarget         String?  @map("main_target")
+  defaultDefenseDays Int?     @map("default_defense_days")
+  notes              String?
+  isActive           Boolean  @default(true) @map("is_active")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  sprayApplications SprayApplication[]
+
+  @@index([productType])
+  @@index([isActive])
+  @@map("products")
+}
+
+model Field {
+  id String @id @default(cuid())
+
+  name String
+  city String
+
+  latitude  Float
+  longitude Float
+
+  crop         String
+  plantingDate String @map("planting_date")
+  cropStatus   String @map("crop_status")
+
+  monitoredDiseases String @map("monitored_diseases")
+
+  previousCrop          String?  @map("previous_crop")
+  cropRotation          Boolean? @map("crop_rotation")
+  peanutRepetitionYears Int?     @map("peanut_repetition_years")
+
+  hadDiseaseIncidence   Boolean? @map("had_disease_incidence")
+  previousDiseases      String?  @map("previous_diseases")
+  diseaseIncidenceLevel String?  @map("disease_incidence_level")
+  historicalPressure    String?  @map("historical_pressure")
+
+  agronomicHistoryNotes String? @map("agronomic_history_notes")
+
+  manualCropStage    String?   @map("manual_crop_stage")
+  cropStageUpdatedAt DateTime? @map("crop_stage_updated_at")
+  cropStageNotes     String?   @map("crop_stage_notes")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  analyses          AnalysisHistory[]
+  inspections       Inspection[]
+  sprayApplications SprayApplication[]
+  calendarEvents    CalendarEvent[]
+
+  @@index([city])
+  @@index([cropStatus])
+  @@map("fields")
+}
+
+model AnalysisHistory {
+  id String @id @default(cuid())
+
+  fieldId String @map("field_id")
+  field   Field  @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+
+  fieldName String @map("field_name")
+  city      String?
+
+  disease  String
+  pathogen String?
+
+  generatedAt String? @map("generated_at")
+
+  climateRiskIndex   Float? @map("climate_risk_index")
+  agronomicRiskIndex Float? @map("agronomic_risk_index")
+
+  classification String?
+
+  managementRelevance String? @map("management_relevance")
+  mainAction           String? @map("main_action")
+
+  resultJson String @map("result_json")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([fieldId])
+  @@index([disease])
+  @@map("analysis_history")
+}
+
+model Inspection {
+  id String @id @default(cuid())
+
+  fieldId String @map("field_id")
+  field   Field  @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+
+  fieldName String @map("field_name")
+
+  disease String
+
+  symptomsFound    Boolean @map("symptoms_found")
+  visualSeverity   String  @map("visual_severity")
+  defoliationLevel String  @map("defoliation_level")
+
+  actionTaken String @map("action_taken")
+
+  notes String @default("")
+
+  inspectedAt DateTime @map("inspected_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  generalStatus       String? @map("general_status")
+  problemDistribution String? @map("problem_distribution")
+
+  pestsFound Boolean? @map("pests_found")
+  pestNotes  String?  @map("pest_notes")
+
+  weedsFound   Boolean? @map("weeds_found")
+  weedPressure String?  @map("weed_pressure")
+
+  soilCondition String? @map("soil_condition")
+
+  returnNeeded Boolean? @map("return_needed")
+  returnDays   Int?     @map("return_days")
+
+  observedArea String? @map("observed_area")
+  responsible  String?
+
+  @@index([fieldId])
+  @@index([inspectedAt])
+  @@map("inspections")
+}
+
+model SprayApplication {
+  id String @id @default(cuid())
+
+  fieldId String @map("field_id")
+  field   Field  @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+
+  fieldName String @map("field_name")
+
+  applicationDate DateTime @map("application_date")
+
+  productId  String?  @map("product_id")
+  productRef Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  product     String
+  productType String? @map("product_type")
+
+  target String
+  dose   String
+
+  responsible String @default("")
+
+  plannedIntervalDays Int @map("planned_interval_days")
+
+  notes String @default("")
+
+  generateReapplication      Boolean @default(false) @map("generate_reapplication")
+  reapplicationIntervalDays  Int?    @map("reapplication_interval_days")
+  reapplicationDate          String? @map("reapplication_date")
+  reapplicationNotes         String? @map("reapplication_notes")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([fieldId])
+  @@index([productId])
+  @@index([applicationDate])
+  @@map("spray_applications")
+}
+
+model CalendarEvent {
+  id String @id @default(cuid())
+
+  eventType String @map("event_type")
+  title     String
+
+  fieldId String? @map("field_id")
+  field   Field?  @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+
+  fieldName String? @map("field_name")
+
+  date    String
+  endDate String @map("end_date")
+
+  product     String  @default("")
+  productType String? @map("product_type")
+
+  target String @default("")
+
+  plannedIntervalDays Int? @map("planned_interval_days")
+
+  notes String @default("")
+
+  colorKey String @map("color_key")
+  status   String
+
+  sourceType String? @map("source_type")
+  sourceId   String? @map("source_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([date])
+  @@index([fieldId])
+  @@index([eventType])
+  @@index([sourceType, sourceId])
+  @@map("calendar_events")
+}
