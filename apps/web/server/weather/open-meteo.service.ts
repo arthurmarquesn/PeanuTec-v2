@@ -5,6 +5,10 @@ import {
   getSaoPauloDateKey,
 } from "@/server/time/sao-paulo";
 
+import {
+  buildWeatherFixture,
+} from "@/server/weather/weather-fixture";
+
 /* =========================================================
  * Configuration
  * ========================================================= */
@@ -291,6 +295,15 @@ function getValidCacheEntry<T>(
   return entry.value;
 }
 
+function shouldUseWeatherFixture(): boolean {
+  return (
+    process.env.PEANUTEC_WEATHER_MODE ===
+      "fixture" &&
+    process.env.NODE_ENV !==
+      "production"
+  );
+}
+
 async function requestJson<T>(
   url: URL,
 ): Promise<T> {
@@ -492,6 +505,13 @@ async function fetchForecast(
   latitude: number,
   longitude: number,
 ): Promise<ForecastHourlyWeather> {
+  if (
+    shouldUseWeatherFixture()
+  ) {
+    return buildWeatherFixture()
+      .forecast;
+  }
+
   const url =
     buildForecastUrl(
       latitude,
@@ -613,6 +633,13 @@ async function fetchHistoricalRainfall(
   latitude: number,
   longitude: number,
 ): Promise<HistoricalDailyRainfall> {
+  if (
+    shouldUseWeatherFixture()
+  ) {
+    return buildWeatherFixture()
+      .historical;
+  }
+
   const url =
     buildHistoricalUrl(
       latitude,
