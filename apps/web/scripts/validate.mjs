@@ -49,6 +49,89 @@ const npxCommand =
     ? "npx.cmd"
     : "npx";
 
+const npmShell =
+  process.platform ===
+  "win32";
+
+function runProcess(
+  command,
+  args,
+  cwd,
+  env = {},
+) {
+  return spawnSync(
+    command,
+    args,
+    {
+      cwd,
+      env: {
+        ...process.env,
+        ...env,
+      },
+      encoding: "utf8",
+      shell: npmShell && (
+        command === npmCommand ||
+        command === npxCommand
+      ),
+      stdio: [
+        "ignore",
+        "pipe",
+        "pipe",
+      ],
+    },
+  );
+}
+
+function runStep(
+  name,
+  command,
+  args,
+  cwd,
+  env = {},
+) {
+  console.log(`\n=== ${name} ===`);
+
+  const result =
+    runProcess(
+      command,
+      args,
+      cwd,
+      env,
+    );
+
+  if (result.error) {
+    console.error(
+      result.error.message,
+    );
+
+    return {
+      ok: false,
+      detail:
+        result.error.message,
+    };
+  }
+
+  if (result.stdout) {
+    process.stdout.write(
+      result.stdout,
+    );
+  }
+
+  if (result.stderr) {
+    process.stderr.write(
+      result.stderr,
+    );
+  }
+
+  return {
+    ok:
+      result.status ===
+      0,
+    detail:
+      `exit code ${result.status ?? "unknown"}`,
+  };
+}
+
 function findPython() {
   if (
     process.platform ===
@@ -104,64 +187,107 @@ function findPython() {
   return null;
 }
 
-function runStep(
-  name,
-  command,
-  args,
-  cwd,
-  env = {},
-) {
-  console.log(`\n=== ${name} ===`);
+function getVenvPython() {
+  if (
+    process.platform ===
+    "win32"
+  ) {
+    return resolve(
+      intelligenceRoot,
+      ".venv",
+      "Scripts",
+      "python.exe",
+    );
+  }
 
-  const result =
+  return resolve(
+    intelligenceRoot,
+    ".venv",
+    "bin",
+    "python",
+  );
+}
+
+function ensurePythonEnvironment(
+  basePython,
+) {
+  const venvPython =
+    getVenvPython();
+
+  const exists =
     spawnSync(
-      command,
-      args,
+      venvPython,
+      ["--version"],
       {
-        cwd,
-        env: {
-          ...process.env,
-          ...env,
-        },
-        encoding: "utf8",
-        stdio: [
-          "ignore",
-          "pipe",
-          "pipe",
+        stdio: "ignore",
+      },
+    ).status === 0;
+
+  if (!exists) {
+    const created =
+      runStep(
+        "Python · criando .venv",
+        basePython.command,
+        [
+          ...basePython.prefix,
+          "-m",
+          "venv",
+          ".venv",
         ],
+        intelligenceRoot,
+      );
+
+    if (!created.ok) {
+      return {
+        ok: false,
+        detail:
+          "Não foi possível criar o ambiente virtual Python.",
+      };
+    }
+  }
+
+  const dependencies =
+    spawnSync(
+      venvPython,
+      [
+        "-c",
+        "import pytest, requests, fastapi, uvicorn",
+      ],
+      {
+        stdio: "ignore",
       },
     );
 
-  if (result.error) {
-    console.error(
-      result.error.message,
-    );
+  if (
+    dependencies.status !==
+    0
+  ) {
+    const installed =
+      runStep(
+        "Python · requirements.txt",
+        venvPython,
+        [
+          "-m",
+          "pip",
+          "install",
+          "-r",
+          "requirements.txt",
+        ],
+        intelligenceRoot,
+      );
 
-    return {
-      ok: false,
-      detail:
-        result.error.message,
-    };
-  }
-
-  if (result.stdout) {
-    process.stdout.write(
-      result.stdout,
-    );
-  }
-
-  if (result.stderr) {
-    process.stderr.write(
-      result.stderr,
-    );
+    if (!installed.ok) {
+      return {
+        ok: false,
+        detail:
+          "Não foi possível instalar services/intelligence/requirements.txt.",
+      };
+    }
   }
 
   return {
-    ok:
-      result.status ===
-      0,
-    detail:
-      `exit code ${result.status ?? "unknown"}`,
+    ok: true,
+    python: venvPython,
   };
 }
 
@@ -169,6 +295,7 @@ function waitForHttp(
   url,
   name,
   timeoutMs,
+  child = null,
 ) {
   const startedAt =
     Date.now();
@@ -177,6 +304,19 @@ function waitForHttp(
     (resolvePromise, rejectPromise) => {
       const poll =
         async () => {
+          if (
+            child &&
+            child.exitCode !==
+              null
+          ) {
+            rejectPromise(
+              new Error(
+                `${name} encerrou antes de responder (exit code ${child.exitCode}).`,
+              ),
+            );
+            return;
+          }
+
           try {
             const response =
               await fetch(
@@ -238,6 +378,10 @@ function startService({
           ...process.env,
           ...env,
         },
+        shell:
+          process.platform ===
+          "win32" &&
+          command === npmCommand,
         stdio: [
           "ignore",
           "pipe",
@@ -273,7 +417,8 @@ function stopService(
 ) {
   if (
     !child ||
-    child.killed
+    child.killed ||
+    child.exitCode !== null
   ) {
     return;
   }
@@ -344,10 +489,12 @@ record(
   ),
 );
 
-const python =
+const basePython =
   findPython();
+let python =
+  null;
 
-if (!python) {
+if (!basePython) {
   record(
     "pytest · Intelligence Service",
     {
@@ -357,19 +504,33 @@ if (!python) {
     },
   );
 } else {
-  record(
-    "pytest · Intelligence Service",
-    runStep(
+  const environment =
+    ensurePythonEnvironment(
+      basePython,
+    );
+
+  if (!environment.ok) {
+    record(
       "pytest · Intelligence Service",
-      python.command,
-      [
-        ...python.prefix,
-        "-m",
-        "pytest",
-      ],
-      intelligenceRoot,
-    ),
-  );
+      environment,
+    );
+  } else {
+    python =
+      environment.python;
+
+    record(
+      "pytest · Intelligence Service",
+      runStep(
+        "pytest · Intelligence Service",
+        python,
+        [
+          "-m",
+          "pytest",
+        ],
+        intelligenceRoot,
+      ),
+    );
+  }
 }
 
 record(
@@ -406,20 +567,23 @@ try {
     `http://127.0.0.1:${webPort}`;
 
   if (!python) {
+    const detail =
+      "Smoke não iniciado porque o ambiente Python do Intelligence Service não está disponível.";
+
     record(
       "Smoke · serviços",
       {
         ok: false,
-        detail:
-          "Smoke não iniciado porque o Python 3 é obrigatório para o Intelligence Service.",
+        detail,
       },
     );
+
     record(
       "Smoke · fluxos principais",
       {
         ok: false,
         detail:
-          "Smoke não executado porque o Intelligence Service não pode ser iniciado.",
+          `Smoke não executado: ${detail}`,
       },
     );
   } else {
@@ -428,9 +592,8 @@ try {
         name:
           "intelligence",
         command:
-          python.command,
+          python,
         args: [
-          ...python.prefix,
           "-m",
           "uvicorn",
           "app.main:app",
@@ -450,6 +613,7 @@ try {
       `${serviceUrl}/health`,
       "Intelligence Service",
       30_000,
+      intelligenceProcess,
     );
 
     webProcess =
@@ -487,6 +651,7 @@ try {
       `${webUrl}/`,
       "Next.js",
       90_000,
+      webProcess,
     );
 
     record(
