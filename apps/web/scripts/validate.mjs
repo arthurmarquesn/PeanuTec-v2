@@ -5,13 +5,21 @@ import {
 import {
   resolve,
 } from "node:path";
+import {
+  fileURLToPath,
+} from "node:url";
 
-const webRoot =
-  resolve(
+const scriptDir =
+  fileURLToPath(
     new URL(
       ".",
       import.meta.url,
-    ).pathname,
+    ),
+  );
+
+const webRoot =
+  resolve(
+    scriptDir,
     "..",
   );
 
@@ -406,6 +414,14 @@ try {
           "Smoke não iniciado porque o Python 3 é obrigatório para o Intelligence Service.",
       },
     );
+    record(
+      "Smoke · fluxos principais",
+      {
+        ok: false,
+        detail:
+          "Smoke não executado porque o Intelligence Service não pode ser iniciado.",
+      },
+    );
   } else {
     intelligenceProcess =
       startService({
@@ -496,14 +512,25 @@ try {
     );
   }
 } catch (error) {
+  const detail =
+    error instanceof Error
+      ? error.message
+      : String(error);
+
   record(
     "Smoke · serviços",
     {
       ok: false,
+      detail,
+    },
+  );
+
+  record(
+    "Smoke · fluxos principais",
+    {
+      ok: false,
       detail:
-        error instanceof Error
-          ? error.message
-          : String(error),
+        `Smoke não executado: ${detail}`,
     },
   );
 } finally {
