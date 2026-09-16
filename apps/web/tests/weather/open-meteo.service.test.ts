@@ -559,14 +559,17 @@ describe(
     it(
       "does not convert absent optional weather fields to zero",
       async () => {
-        const forecast =
-          forecastPayload();
+       const forecast = forecastPayload();
 
-        delete forecast.hourly.precipitation;
+const hourly = { ...forecast.hourly };
+delete (hourly as Record<string, unknown>).precipitation;
 
-        mockOpenMeteoFetch({
-          forecast,
-        });
+mockOpenMeteoFetch({
+  forecast: {
+    ...forecast,
+    hourly,
+  },
+});
 
         const snapshot =
           await getWeatherSnapshot(
