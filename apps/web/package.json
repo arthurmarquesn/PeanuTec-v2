@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "smoke:main": "node scripts/smoke-main-flows.mjs"
+    "smoke:main": "node scripts/smoke-main-flows.mjs",
+    "test:weather": "vitest run tests/weather/open-meteo.service.test.ts",
+    "validate": "node scripts/validate.mjs"
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^7.10.0",
@@ -29,7 +31,6 @@
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
-    "prisma": "^7.10.0",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^3.2.4"
