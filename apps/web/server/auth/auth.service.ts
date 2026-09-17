@@ -6,12 +6,10 @@ import {
   scrypt as scryptCallback,
   timingSafeEqual,
 } from "node:crypto";
-import { promisify } from "node:util";
 import { cookies } from "next/headers";
 
 import { prisma } from "@/server/db/prisma";
 
-const scrypt = promisify(scryptCallback);
 const SESSION_COOKIE = "peanutec_session";
 const SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000;
 const SESSION_RENEW_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
@@ -20,6 +18,37 @@ const SCRYPT_N = 32_768;
 const SCRYPT_R = 8;
 const SCRYPT_P = 1;
 const SCRYPT_MAXMEM = 128 * 1024 * 1024;
+
+type ScryptOptions = {
+  N: number;
+  r: number;
+  p: number;
+  maxmem: number;
+};
+
+function deriveScryptKey(
+  password: string,
+  salt: Buffer,
+  keyLength: number,
+  options: ScryptOptions,
+): Promise<Buffer> {
+  return new Promise((resolve, reject) => {
+    scryptCallback(
+      password,
+      salt,
+      keyLength,
+      options,
+      (error, derivedKey) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+
+        resolve(derivedKey);
+      },
+    );
+  });
+}
 
 export type AuthUser = {
   id: string;
@@ -93,12 +122,17 @@ function validatePassword(password: unknown): string {
 
 async function hashPassword(password: string): Promise<string> {
   const salt = randomBytes(16);
-  const derived = (await scrypt(password, salt, SCRYPT_KEY_LENGTH, {
-    N: SCRYPT_N,
-    r: SCRYPT_R,
-    p: SCRYPT_P,
-    maxmem: SCRYPT_MAXMEM,
-  })) as Buffer;
+  const derived = await deriveScryptKey(
+    password,
+    salt,
+    SCRYPT_KEY_LENGTH,
+    {
+      N: SCRYPT_N,
+      r: SCRYPT_R,
+      p: SCRYPT_P,
+      maxmem: SCRYPT_MAXMEM,
+    },
+  );
 
   return [
     "scrypt",
@@ -125,12 +159,17 @@ async function verifyPassword(password: string, encoded: string): Promise<boolea
       return false;
     }
 
-    const derived = (await scrypt(password, salt, expected.length, {
-      N: n,
-      r,
-      p,
-      maxmem: SCRYPT_MAXMEM,
-    })) as Buffer;
+    const derived = await deriveScryptKey(
+      password,
+      salt,
+      expected.length,
+      {
+        N: n,
+        r,
+        p,
+        maxmem: SCRYPT_MAXMEM,
+      },
+    );
 
     return expected.length === derived.length && timingSafeEqual(expected, derived);
   } catch {
