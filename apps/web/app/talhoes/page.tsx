@@ -15,6 +15,8 @@ import {
 
 import { AppShell } from "@/components/AppShell";
 
+import FieldAnalysisLauncher from "@/components/FieldAnalysisLauncher";
+
 import FieldsOverview from "@/components/FieldsOverview";
 
 import {
@@ -140,6 +142,8 @@ function FieldsPageContent() {
             </div>
           </div>
         ) : null}
+
+        <FieldAnalysisLauncher />
 
         <FieldsOverview />
       </div>
