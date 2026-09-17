@@ -80,11 +80,13 @@ Data da estabilizacao: 2026-09-14
 - Corrigida rota Next `GET /api/fields/[id]/situation`.
 - Corrigida rota Next `GET/POST /api/fields/[id]/inspections`.
 
-## 6. Dependencias do legado restantes
+## 6. Dependencias do legado no estado inicial
 
-- `services/intelligence/app/engine_adapter.py` ainda importa o motor legado como biblioteca de calculo em `legacy/python-backend-v1/src`.
-- `apps/web/lib/api.ts` ainda contem chamadas de autenticacao legada (`/auth/login`, `/auth/register`, `/auth/me`) via `NEXT_PUBLIC_LEGACY_AUTH_API_URL`.
-- Nenhum fluxo operacional validado de talhao, clima, analise, ranking, safra ou relatorio exigiu o backend V1 rodando como API.
+Esta secao registra o estado encontrado em 2026-09-14. As dependencias descritas aqui foram removidas nas Tasks 1 e 2:
+
+- `services/intelligence/app/engine_adapter.py` importava o motor legado como biblioteca de calculo em `legacy/python-backend-v1/src`.
+- `apps/web/lib/api.ts` continha chamadas de autenticacao legada (`/auth/login`, `/auth/register`, `/auth/me`) via `NEXT_PUBLIC_LEGACY_AUTH_API_URL`.
+- Nenhum fluxo operacional validado de talhao, clima, analise, ranking, safra ou relatorio exigia o backend V1 rodando como API.
 
 ## 7. Testes executados
 
@@ -107,7 +109,9 @@ Data da estabilizacao: 2026-09-14
 - Smoke manual de CRUD de talhao com criacao, edicao, listagem e delete.
 - Smoke manual de criacao de inspecao e pulverizacao.
 
-## 8. Resultados dos testes
+## 8. Resultados dos testes historicos
+
+Os resultados abaixo refletem a rodada de estabilizacao original de 2026-09-14 e nao substituem a validacao final de 2026-09-17.
 
 - TypeScript: passou.
 - Lint: passou.
@@ -123,18 +127,28 @@ Data da estabilizacao: 2026-09-14
 - Relatorio tecnico JSON respondeu 200.
 - Relatorio tecnico PDF respondeu 200 com `application/pdf`.
 
-## 9. Problemas ainda conhecidos
+## 9. Problemas ainda conhecidos no estado historico
 
-- A autenticacao ainda depende do backend legado se `NEXT_PUBLIC_DISABLE_AUTH` for removido.
-- `services/intelligence` ainda depende do codigo legado como biblioteca interna do motor de risco.
-- O worktree Git esta em estado de reorganizacao grande e deve ser normalizado antes de um commit/release formal.
-- O smoke web depende de Next e Intelligence ja estarem rodando.
+Os itens abaixo foram resolvidos pelas Tasks 1 e 2 ou representam limitacoes de validacao local que continuam validas apenas conforme indicado:
+
+- A dependencia de autenticacao no backend legado foi substituida por autenticacao propria da V2.
+- A dependencia do motor legado pelo `engine_adapter` foi removida; o motor agora vive em `services/intelligence`.
+- O worktree Git estava em reorganizacao ampla antes da estabilizacao e deve ser tratado conforme o fluxo de release do repositorio.
+- O smoke web depende de Next e Intelligence disponiveis localmente.
 - O smoke web consulta Open-Meteo via cache do Next; se a rede externa cair, esse smoke pode falhar por indisponibilidade externa.
 
-## 10. Proximas implementacoes recomendadas
+## 10. Atualizacao pos-Tasks 1 e 2 — 2026-09-17
 
-- Migrar autenticacao para Next ou outro provedor definido e remover dependencia de `/auth/*` no V1.
-- Extrair gradualmente o motor legado usado pelo `engine_adapter` para codigo proprio de `services/intelligence`.
+- `services/intelligence` possui o motor de risco dentro da propria V2 e nao importa `legacy/python-backend-v1`.
+- A autenticacao propria da V2 usa `User` + `Session` em Prisma e nao depende do V1.
+- O fluxo operacional de analise esta exposto em `/talhoes` e usa `POST /api/fields/[id]/analysis`.
+- A interface de analise do talhao foi integrada ao produto, permitindo selecionar um talhao e executar a leitura pelo Intelligence Service.
+- A rodada de validacao local de 2026-09-17 passou em todas as etapas: Prisma generate, migrations, TypeScript, ESLint, Auth Vitest (9/9), Intelligence pytest (24/24), Weather Vitest (14/14) e smoke dos fluxos principais.
+- O diretorio `legacy/python-backend-v1` foi descomissionado na branch atual apos a validacao acima.
+- E necessario executar novamente o `npm.cmd run validate` apos a remocao do diretorio para comprovar o estado final sem o legado presente.
+
+## 11. Proximas implementacoes recomendadas
+
 - Adicionar testes unitarios do weather cache com mock de `fetch`, cobrindo deduplicacao concorrente explicitamente.
 - Criar pipeline local/CI que rode `tsc`, `lint`, `pytest` e smoke controlado.
 - Preparar Docker apenas depois de estabilizar o fluxo local e variaveis.
