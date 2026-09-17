@@ -9,6 +9,7 @@
     "lint": "eslint",
     "smoke:main": "node scripts/smoke-main-flows.mjs",
     "test:weather": "vitest run tests/weather/open-meteo.service.test.ts",
+    "test:auth": "vitest run tests/auth/auth.service.test.ts",
     "validate": "node scripts/validate.mjs"
   },
   "dependencies": {

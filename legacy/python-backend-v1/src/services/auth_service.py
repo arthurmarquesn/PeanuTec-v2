@@ -6,7 +6,10 @@ import secrets
 from uuid import uuid4
 
 from src.repositories import users_repository
+from src.services.legacy_auth_deprecation import disable_legacy_auth_routes
 
+
+disable_legacy_auth_routes()
 
 PASSWORD_HASH_ITERATIONS = 210_000
 TOKEN_SECRET = os.environ.get("PEANUTEC_AUTH_SECRET", "peanutec-dev-secret")
