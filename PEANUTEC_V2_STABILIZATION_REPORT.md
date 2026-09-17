@@ -127,27 +127,17 @@ Os resultados abaixo refletem a rodada de estabilizacao original de 2026-09-14 e
 - Relatorio tecnico JSON respondeu 200.
 - Relatorio tecnico PDF respondeu 200 com `application/pdf`.
 
-## 9. Problemas ainda conhecidos no estado historico
-
-Os itens abaixo foram resolvidos pelas Tasks 1 e 2 ou representam limitacoes de validacao local que continuam validas apenas conforme indicado:
-
-- A dependencia de autenticacao no backend legado foi substituida por autenticacao propria da V2.
-- A dependencia do motor legado pelo `engine_adapter` foi removida; o motor agora vive em `services/intelligence`.
-- O worktree Git estava em reorganizacao ampla antes da estabilizacao e deve ser tratado conforme o fluxo de release do repositorio.
-- O smoke web depende de Next e Intelligence disponiveis localmente.
-- O smoke web consulta Open-Meteo via cache do Next; se a rede externa cair, esse smoke pode falhar por indisponibilidade externa.
-
-## 10. Atualizacao pos-Tasks 1 e 2 — 2026-09-17
+## 9. Estado da V2 apos Tasks 1 e 2 — 2026-09-17
 
 - `services/intelligence` possui o motor de risco dentro da propria V2 e nao importa `legacy/python-backend-v1`.
 - A autenticacao propria da V2 usa `User` + `Session` em Prisma e nao depende do V1.
 - O fluxo operacional de analise esta exposto em `/talhoes` e usa `POST /api/fields/[id]/analysis`.
 - A interface de analise do talhao foi integrada ao produto, permitindo selecionar um talhao e executar a leitura pelo Intelligence Service.
 - A rodada de validacao local de 2026-09-17 passou em todas as etapas: Prisma generate, migrations, TypeScript, ESLint, Auth Vitest (9/9), Intelligence pytest (24/24), Weather Vitest (14/14) e smoke dos fluxos principais.
-- O diretorio `legacy/python-backend-v1` foi descomissionado na branch atual apos a validacao acima.
-- E necessario executar novamente o `npm.cmd run validate` apos a remocao do diretorio para comprovar o estado final sem o legado presente.
+- O diretorio `legacy/python-backend-v1` foi removido da arvore atual da V2.
+- O validate final apos a remocao deve ser executado localmente para comprovar o estado final.
 
-## 11. Proximas implementacoes recomendadas
+## 10. Proximas implementacoes recomendadas
 
 - Adicionar testes unitarios do weather cache com mock de `fetch`, cobrindo deduplicacao concorrente explicitamente.
 - Criar pipeline local/CI que rode `tsc`, `lint`, `pytest` e smoke controlado.
