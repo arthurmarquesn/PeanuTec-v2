@@ -75,4 +75,4 @@ O frontend e o Intelligence Service nao dependem do backend legado para descobri
 
 ## Dependencias Legadas
 
-O backend V1 foi descomissionado da V2. O codigo operacional atual nao depende de `legacy/python-backend-v1`, nem para autenticacao, nem para o motor de risco, nem para os fluxos de talhao, clima, analise, ranking, safra ou relatorios.
+O backend V1 foi removido da arvore da V2. O codigo operacional atual nao depende de `legacy/python-backend-v1`, nem para autenticacao, nem para o motor de risco, nem para os fluxos de talhao, clima, analise, ranking, safra ou relatorios.
