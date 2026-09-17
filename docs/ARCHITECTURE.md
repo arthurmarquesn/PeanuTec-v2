@@ -15,6 +15,7 @@ Next vira o produto; Python vira a inteligencia do produto.
 - Prisma e SQLite local.
 - Cache meteorologico.
 - Persistencia das analises.
+- Autenticacao e autorizacao da V2.
 
 `services/intelligence`
 
@@ -23,12 +24,7 @@ Next vira o produto; Python vira a inteligencia do produto.
 - Motor de risco.
 - Contrato puro: recebe snapshot do talhao e snapshot meteorologico.
 - Nao consulta Open-Meteo.
-
-`legacy/python-backend-v1`
-
-- Referencia historica.
-- Biblioteca temporaria para partes do motor usadas pelo `engine_adapter`.
-- Nao deve ser necessario como API operacional do produto.
+- O motor e mantido integralmente dentro da V2.
 
 `Open-Meteo`
 
@@ -37,7 +33,7 @@ Next vira o produto; Python vira a inteligencia do produto.
 
 `Prisma`
 
-- Persistencia operacional de talhoes, produtos, inspecoes, pulverizacoes, calendario e historico de analises.
+- Persistencia operacional de talhoes, usuarios, sessoes, produtos, inspecoes, pulverizacoes, calendario e historico de analises.
 
 ## Fluxo de Analise
 
@@ -58,7 +54,9 @@ O endpoint registrado e:
 POST /api/fields/[id]/analysis
 ```
 
-O endpoint consulta o talhao, reutiliza as doencas monitoradas, busca o clima uma vez por talhao e envia uma requisicao ao Intelligence Service por doenca.
+O endpoint valida a propriedade do talhao, consulta as doencas monitoradas, busca o clima uma vez por talhao e envia o snapshot ao Intelligence Service.
+
+A interface principal para executar a leitura esta em `/talhoes`.
 
 ## Doencas Suportadas
 
@@ -73,14 +71,8 @@ Doencas atuais:
 - Mancha-preta.
 - Mancha-castanha.
 
-O frontend nao chama mais `GET /doencas` no backend legado.
+O frontend e o Intelligence Service nao dependem do backend legado para descobrir ou analisar doencas.
 
-## Dependencia Legada Restante
+## Dependencias Legadas
 
-A autenticacao ainda pode usar o backend V1 via:
-
-```text
-NEXT_PUBLIC_LEGACY_AUTH_API_URL
-```
-
-Essa dependencia esta isolada em `apps/web/lib/api.ts` e nao faz parte dos fluxos operacionais principais de talhao, clima, analise, ranking, safra ou relatorios.
+O backend V1 foi descomissionado da V2. O codigo operacional atual nao depende de `legacy/python-backend-v1`, nem para autenticacao, nem para o motor de risco, nem para os fluxos de talhao, clima, analise, ranking, safra ou relatorios.
