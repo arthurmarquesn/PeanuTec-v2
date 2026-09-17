@@ -17,7 +17,6 @@ import {
 
 import {
   LoadingState,
-  PrimaryButton,
   SectionCard,
   StatusBadge,
 } from "@/components/design-system";
