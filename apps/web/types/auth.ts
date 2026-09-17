@@ -1,5 +1,5 @@
 export type AuthUser = {
-  id?: string;
+  id: string;
   name: string;
   email: string;
 };
@@ -16,7 +16,9 @@ export type RegisterRequest = {
 };
 
 export type LoginResponse = {
-  access_token: string;
-  token_type?: string;
-  user?: AuthUser;
+  user: AuthUser;
+};
+
+export type LogoutResponse = {
+  message: string;
 };

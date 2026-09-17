@@ -7,6 +7,34 @@ datasource db {
   provider = "sqlite"
 }
 
+model User {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  passwordHash String    @map("password_hash")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  sessions Session[]
+  fields   Field[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique @map("token_hash")
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  lastUsedAt DateTime @default(now()) @map("last_used_at")
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("sessions")
+}
+
 model Product {
   id                 String   @id @default(cuid())
   name               String
@@ -56,6 +84,9 @@ model Field {
   cropStageUpdatedAt DateTime? @map("crop_stage_updated_at")
   cropStageNotes     String?   @map("crop_stage_notes")
 
+  userId String? @map("user_id")
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -66,6 +97,7 @@ model Field {
 
   @@index([city])
   @@index([cropStatus])
+  @@index([userId])
   @@map("fields")
 }
 
