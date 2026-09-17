@@ -249,6 +249,21 @@ def analyze(
         )
     )
 
+    historical_daily_rainfall = (
+        weather[
+            "historical_daily_rainfall"
+        ]
+    )
+
+    if "precipitation_sum" not in historical_daily_rainfall:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "Snapshot meteorológico inválido: "
+                "historical_daily_rainfall.precipitation_sum é obrigatório."
+            ),
+        )
+
     try:
         result = (
             run_disease_analysis_from_snapshot(
@@ -258,11 +273,7 @@ def analyze(
                         "hourly_weather"
                     ]
                 ),
-                historical_daily_rainfall=(
-                    weather[
-                        "historical_daily_rainfall"
-                    ]
-                ),
+                historical_daily_rainfall=historical_daily_rainfall,
             )
         )
 
