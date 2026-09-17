@@ -1,6 +1,8 @@
 import { createHash } from "node:crypto";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 const state = vi.hoisted(() => {
   const users = new Map<string, any>();
   const sessions = new Map<string, any>();
@@ -86,7 +88,17 @@ const state = vi.hoisted(() => {
     },
   };
 
-  return { users, sessions, fields, cookieValues, cookieStore, prisma };
+  return {
+    users,
+    sessions,
+    fields,
+    cookieValues,
+    cookieStore,
+    prisma,
+    resetUserSequence: () => {
+      userSequence = 0;
+    },
+  };
 });
 
 vi.mock("@/server/db/prisma", () => ({ prisma: state.prisma }));
@@ -109,6 +121,7 @@ describe("V2 authentication", () => {
     state.sessions.clear();
     state.fields.clear();
     state.cookieValues.clear();
+    state.resetUserSequence();
     vi.clearAllMocks();
   });
 
@@ -161,11 +174,11 @@ describe("V2 authentication", () => {
     const token = state.cookieValues.get("peanutec_session")!;
     const hash = createHash("sha256").update(token).digest("hex");
     const session = state.sessions.get(hash);
-    const oldExpiry = session.expiresAt;
     session.expiresAt = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
+    const oldExpiry = session.expiresAt.getTime();
 
     await getUserFromSessionToken(token);
-    expect(session.expiresAt.getTime()).toBeGreaterThan(oldExpiry.getTime());
+    expect(session.expiresAt.getTime()).toBeGreaterThan(oldExpiry);
   });
 
   it("keeps the session valid across a service-module restart", async () => {
