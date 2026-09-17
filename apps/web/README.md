@@ -11,8 +11,7 @@ Next.js e Prisma formam o produto operacional do PeanuTec V2.
 - Cache meteorologico e chamadas ao Open-Meteo.
 - Persistencia de `AnalysisHistory`.
 - Integracao server-side com `services/intelligence`.
-
-O backend legado nao deve ser usado como API operacional do produto. A excecao atual e a autenticacao legada, isolada em `NEXT_PUBLIC_LEGACY_AUTH_API_URL`, enquanto a autenticacao propria do Next ainda nao existe.
+- Autenticacao e autorizacao proprias da V2.
 
 ## Desenvolvimento Local
 
@@ -55,16 +54,10 @@ DATABASE_URL="file:./prisma/peanutec-v2.db"
 PEANUTEC_INTELLIGENCE_URL="http://127.0.0.1:8001"
 ```
 
-`apps/web/.env.local`:
+`apps/web/.env.local` pode manter o bypass de autenticacao apenas para desenvolvimento local, quando necessario:
 
 ```env
 NEXT_PUBLIC_DISABLE_AUTH=true
-```
-
-Opcional, apenas para autenticacao legada:
-
-```env
-NEXT_PUBLIC_LEGACY_AUTH_API_URL="http://127.0.0.1:8000"
 ```
 
 ## Prisma
