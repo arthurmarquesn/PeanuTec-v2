@@ -59,6 +59,7 @@ export type FieldMinAggregateOutputType = {
   manualCropStage: string | null
   cropStageUpdatedAt: Date | null
   cropStageNotes: string | null
+  userId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -84,6 +85,7 @@ export type FieldMaxAggregateOutputType = {
   manualCropStage: string | null
   cropStageUpdatedAt: Date | null
   cropStageNotes: string | null
+  userId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -109,6 +111,7 @@ export type FieldCountAggregateOutputType = {
   manualCropStage: number
   cropStageUpdatedAt: number
   cropStageNotes: number
+  userId: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -148,6 +151,7 @@ export type FieldMinAggregateInputType = {
   manualCropStage?: true
   cropStageUpdatedAt?: true
   cropStageNotes?: true
+  userId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -173,6 +177,7 @@ export type FieldMaxAggregateInputType = {
   manualCropStage?: true
   cropStageUpdatedAt?: true
   cropStageNotes?: true
+  userId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -198,6 +203,7 @@ export type FieldCountAggregateInputType = {
   manualCropStage?: true
   cropStageUpdatedAt?: true
   cropStageNotes?: true
+  userId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -310,6 +316,7 @@ export type FieldGroupByOutputType = {
   manualCropStage: string | null
   cropStageUpdatedAt: Date | null
   cropStageNotes: string | null
+  userId: string | null
   createdAt: Date
   updatedAt: Date
   _count: FieldCountAggregateOutputType | null
@@ -358,8 +365,10 @@ export type FieldWhereInput = {
   manualCropStage?: Prisma.StringNullableFilter<"Field"> | string | null
   cropStageUpdatedAt?: Prisma.DateTimeNullableFilter<"Field"> | Date | string | null
   cropStageNotes?: Prisma.StringNullableFilter<"Field"> | string | null
+  userId?: Prisma.StringNullableFilter<"Field"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Field"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Field"> | Date | string
+  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   analyses?: Prisma.AnalysisHistoryListRelationFilter
   inspections?: Prisma.InspectionListRelationFilter
   sprayApplications?: Prisma.SprayApplicationListRelationFilter
@@ -387,8 +396,10 @@ export type FieldOrderByWithRelationInput = {
   manualCropStage?: Prisma.SortOrderInput | Prisma.SortOrder
   cropStageUpdatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   cropStageNotes?: Prisma.SortOrderInput | Prisma.SortOrder
+  userId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  user?: Prisma.UserOrderByWithRelationInput
   analyses?: Prisma.AnalysisHistoryOrderByRelationAggregateInput
   inspections?: Prisma.InspectionOrderByRelationAggregateInput
   sprayApplications?: Prisma.SprayApplicationOrderByRelationAggregateInput
@@ -419,8 +430,10 @@ export type FieldWhereUniqueInput = Prisma.AtLeast<{
   manualCropStage?: Prisma.StringNullableFilter<"Field"> | string | null
   cropStageUpdatedAt?: Prisma.DateTimeNullableFilter<"Field"> | Date | string | null
   cropStageNotes?: Prisma.StringNullableFilter<"Field"> | string | null
+  userId?: Prisma.StringNullableFilter<"Field"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Field"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Field"> | Date | string
+  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   analyses?: Prisma.AnalysisHistoryListRelationFilter
   inspections?: Prisma.InspectionListRelationFilter
   sprayApplications?: Prisma.SprayApplicationListRelationFilter
@@ -448,6 +461,7 @@ export type FieldOrderByWithAggregationInput = {
   manualCropStage?: Prisma.SortOrderInput | Prisma.SortOrder
   cropStageUpdatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   cropStageNotes?: Prisma.SortOrderInput | Prisma.SortOrder
+  userId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.FieldCountOrderByAggregateInput
@@ -481,6 +495,7 @@ export type FieldScalarWhereWithAggregatesInput = {
   manualCropStage?: Prisma.StringNullableWithAggregatesFilter<"Field"> | string | null
   cropStageUpdatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Field"> | Date | string | null
   cropStageNotes?: Prisma.StringNullableWithAggregatesFilter<"Field"> | string | null
+  userId?: Prisma.StringNullableWithAggregatesFilter<"Field"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Field"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Field"> | Date | string
 }
@@ -508,6 +523,7 @@ export type FieldCreateInput = {
   cropStageNotes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  user?: Prisma.UserCreateNestedOneWithoutFieldsInput
   analyses?: Prisma.AnalysisHistoryCreateNestedManyWithoutFieldInput
   inspections?: Prisma.InspectionCreateNestedManyWithoutFieldInput
   sprayApplications?: Prisma.SprayApplicationCreateNestedManyWithoutFieldInput
@@ -535,6 +551,7 @@ export type FieldUncheckedCreateInput = {
   manualCropStage?: string | null
   cropStageUpdatedAt?: Date | string | null
   cropStageNotes?: string | null
+  userId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   analyses?: Prisma.AnalysisHistoryUncheckedCreateNestedManyWithoutFieldInput
@@ -566,6 +583,7 @@ export type FieldUpdateInput = {
   cropStageNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneWithoutFieldsNestedInput
   analyses?: Prisma.AnalysisHistoryUpdateManyWithoutFieldNestedInput
   inspections?: Prisma.InspectionUpdateManyWithoutFieldNestedInput
   sprayApplications?: Prisma.SprayApplicationUpdateManyWithoutFieldNestedInput
@@ -593,6 +611,7 @@ export type FieldUncheckedUpdateInput = {
   manualCropStage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cropStageUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cropStageNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   analyses?: Prisma.AnalysisHistoryUncheckedUpdateManyWithoutFieldNestedInput
@@ -622,6 +641,7 @@ export type FieldCreateManyInput = {
   manualCropStage?: string | null
   cropStageUpdatedAt?: Date | string | null
   cropStageNotes?: string | null
+  userId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -672,8 +692,19 @@ export type FieldUncheckedUpdateManyInput = {
   manualCropStage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cropStageUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cropStageNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type FieldListRelationFilter = {
+  every?: Prisma.FieldWhereInput
+  some?: Prisma.FieldWhereInput
+  none?: Prisma.FieldWhereInput
+}
+
+export type FieldOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type FieldCountOrderByAggregateInput = {
@@ -697,6 +728,7 @@ export type FieldCountOrderByAggregateInput = {
   manualCropStage?: Prisma.SortOrder
   cropStageUpdatedAt?: Prisma.SortOrder
   cropStageNotes?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -728,6 +760,7 @@ export type FieldMaxOrderByAggregateInput = {
   manualCropStage?: Prisma.SortOrder
   cropStageUpdatedAt?: Prisma.SortOrder
   cropStageNotes?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -753,6 +786,7 @@ export type FieldMinOrderByAggregateInput = {
   manualCropStage?: Prisma.SortOrder
   cropStageUpdatedAt?: Prisma.SortOrder
   cropStageNotes?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -771,6 +805,48 @@ export type FieldScalarRelationFilter = {
 export type FieldNullableScalarRelationFilter = {
   is?: Prisma.FieldWhereInput | null
   isNot?: Prisma.FieldWhereInput | null
+}
+
+export type FieldCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.FieldCreateWithoutUserInput, Prisma.FieldUncheckedCreateWithoutUserInput> | Prisma.FieldCreateWithoutUserInput[] | Prisma.FieldUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.FieldCreateOrConnectWithoutUserInput | Prisma.FieldCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.FieldCreateManyUserInputEnvelope
+  connect?: Prisma.FieldWhereUniqueInput | Prisma.FieldWhereUniqueInput[]
+}
+
+export type FieldUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.FieldCreateWithoutUserInput, Prisma.FieldUncheckedCreateWithoutUserInput> | Prisma.FieldCreateWithoutUserInput[] | Prisma.FieldUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.FieldCreateOrConnectWithoutUserInput | Prisma.FieldCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.FieldCreateManyUserInputEnvelope
+  connect?: Prisma.FieldWhereUniqueInput | Prisma.FieldWhereUniqueInput[]
+}
+
+export type FieldUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.FieldCreateWithoutUserInput, Prisma.FieldUncheckedCreateWithoutUserInput> | Prisma.FieldCreateWithoutUserInput[] | Prisma.FieldUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.FieldCreateOrConnectWithoutUserInput | Prisma.FieldCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.FieldUpsertWithWhereUniqueWithoutUserInput | Prisma.FieldUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.FieldCreateManyUserInputEnvelope
+  set?: Prisma.FieldWhereUniqueInput | Prisma.FieldWhereUniqueInput[]
+  disconnect?: Prisma.FieldWhereUniqueInput | Prisma.FieldWhereUniqueInput[]
+  delete?: Prisma.FieldWhereUniqueInput | Prisma.FieldWhereUniqueInput[]
+  connect?: Prisma.FieldWhereUniqueInput | Prisma.FieldWhereUniqueInput[]
+  update?: Prisma.FieldUpdateWithWhereUniqueWithoutUserInput | Prisma.FieldUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.FieldUpdateManyWithWhereWithoutUserInput | Prisma.FieldUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.FieldScalarWhereInput | Prisma.FieldScalarWhereInput[]
+}
+
+export type FieldUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.FieldCreateWithoutUserInput, Prisma.FieldUncheckedCreateWithoutUserInput> | Prisma.FieldCreateWithoutUserInput[] | Prisma.FieldUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.FieldCreateOrConnectWithoutUserInput | Prisma.FieldCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.FieldUpsertWithWhereUniqueWithoutUserInput | Prisma.FieldUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.FieldCreateManyUserInputEnvelope
+  set?: Prisma.FieldWhereUniqueInput | Prisma.FieldWhereUniqueInput[]
+  disconnect?: Prisma.FieldWhereUniqueInput | Prisma.FieldWhereUniqueInput[]
+  delete?: Prisma.FieldWhereUniqueInput | Prisma.FieldWhereUniqueInput[]
+  connect?: Prisma.FieldWhereUniqueInput | Prisma.FieldWhereUniqueInput[]
+  update?: Prisma.FieldUpdateWithWhereUniqueWithoutUserInput | Prisma.FieldUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.FieldUpdateManyWithWhereWithoutUserInput | Prisma.FieldUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.FieldScalarWhereInput | Prisma.FieldScalarWhereInput[]
 }
 
 export type FloatFieldUpdateOperationsInput = {
@@ -847,6 +923,118 @@ export type FieldUpdateOneWithoutCalendarEventsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.FieldUpdateToOneWithWhereWithoutCalendarEventsInput, Prisma.FieldUpdateWithoutCalendarEventsInput>, Prisma.FieldUncheckedUpdateWithoutCalendarEventsInput>
 }
 
+export type FieldCreateWithoutUserInput = {
+  id?: string
+  name: string
+  city: string
+  latitude: number
+  longitude: number
+  crop: string
+  plantingDate: string
+  cropStatus: string
+  monitoredDiseases: string
+  previousCrop?: string | null
+  cropRotation?: boolean | null
+  peanutRepetitionYears?: number | null
+  hadDiseaseIncidence?: boolean | null
+  previousDiseases?: string | null
+  diseaseIncidenceLevel?: string | null
+  historicalPressure?: string | null
+  agronomicHistoryNotes?: string | null
+  manualCropStage?: string | null
+  cropStageUpdatedAt?: Date | string | null
+  cropStageNotes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  analyses?: Prisma.AnalysisHistoryCreateNestedManyWithoutFieldInput
+  inspections?: Prisma.InspectionCreateNestedManyWithoutFieldInput
+  sprayApplications?: Prisma.SprayApplicationCreateNestedManyWithoutFieldInput
+  calendarEvents?: Prisma.CalendarEventCreateNestedManyWithoutFieldInput
+}
+
+export type FieldUncheckedCreateWithoutUserInput = {
+  id?: string
+  name: string
+  city: string
+  latitude: number
+  longitude: number
+  crop: string
+  plantingDate: string
+  cropStatus: string
+  monitoredDiseases: string
+  previousCrop?: string | null
+  cropRotation?: boolean | null
+  peanutRepetitionYears?: number | null
+  hadDiseaseIncidence?: boolean | null
+  previousDiseases?: string | null
+  diseaseIncidenceLevel?: string | null
+  historicalPressure?: string | null
+  agronomicHistoryNotes?: string | null
+  manualCropStage?: string | null
+  cropStageUpdatedAt?: Date | string | null
+  cropStageNotes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  analyses?: Prisma.AnalysisHistoryUncheckedCreateNestedManyWithoutFieldInput
+  inspections?: Prisma.InspectionUncheckedCreateNestedManyWithoutFieldInput
+  sprayApplications?: Prisma.SprayApplicationUncheckedCreateNestedManyWithoutFieldInput
+  calendarEvents?: Prisma.CalendarEventUncheckedCreateNestedManyWithoutFieldInput
+}
+
+export type FieldCreateOrConnectWithoutUserInput = {
+  where: Prisma.FieldWhereUniqueInput
+  create: Prisma.XOR<Prisma.FieldCreateWithoutUserInput, Prisma.FieldUncheckedCreateWithoutUserInput>
+}
+
+export type FieldCreateManyUserInputEnvelope = {
+  data: Prisma.FieldCreateManyUserInput | Prisma.FieldCreateManyUserInput[]
+}
+
+export type FieldUpsertWithWhereUniqueWithoutUserInput = {
+  where: Prisma.FieldWhereUniqueInput
+  update: Prisma.XOR<Prisma.FieldUpdateWithoutUserInput, Prisma.FieldUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.FieldCreateWithoutUserInput, Prisma.FieldUncheckedCreateWithoutUserInput>
+}
+
+export type FieldUpdateWithWhereUniqueWithoutUserInput = {
+  where: Prisma.FieldWhereUniqueInput
+  data: Prisma.XOR<Prisma.FieldUpdateWithoutUserInput, Prisma.FieldUncheckedUpdateWithoutUserInput>
+}
+
+export type FieldUpdateManyWithWhereWithoutUserInput = {
+  where: Prisma.FieldScalarWhereInput
+  data: Prisma.XOR<Prisma.FieldUpdateManyMutationInput, Prisma.FieldUncheckedUpdateManyWithoutUserInput>
+}
+
+export type FieldScalarWhereInput = {
+  AND?: Prisma.FieldScalarWhereInput | Prisma.FieldScalarWhereInput[]
+  OR?: Prisma.FieldScalarWhereInput[]
+  NOT?: Prisma.FieldScalarWhereInput | Prisma.FieldScalarWhereInput[]
+  id?: Prisma.StringFilter<"Field"> | string
+  name?: Prisma.StringFilter<"Field"> | string
+  city?: Prisma.StringFilter<"Field"> | string
+  latitude?: Prisma.FloatFilter<"Field"> | number
+  longitude?: Prisma.FloatFilter<"Field"> | number
+  crop?: Prisma.StringFilter<"Field"> | string
+  plantingDate?: Prisma.StringFilter<"Field"> | string
+  cropStatus?: Prisma.StringFilter<"Field"> | string
+  monitoredDiseases?: Prisma.StringFilter<"Field"> | string
+  previousCrop?: Prisma.StringNullableFilter<"Field"> | string | null
+  cropRotation?: Prisma.BoolNullableFilter<"Field"> | boolean | null
+  peanutRepetitionYears?: Prisma.IntNullableFilter<"Field"> | number | null
+  hadDiseaseIncidence?: Prisma.BoolNullableFilter<"Field"> | boolean | null
+  previousDiseases?: Prisma.StringNullableFilter<"Field"> | string | null
+  diseaseIncidenceLevel?: Prisma.StringNullableFilter<"Field"> | string | null
+  historicalPressure?: Prisma.StringNullableFilter<"Field"> | string | null
+  agronomicHistoryNotes?: Prisma.StringNullableFilter<"Field"> | string | null
+  manualCropStage?: Prisma.StringNullableFilter<"Field"> | string | null
+  cropStageUpdatedAt?: Prisma.DateTimeNullableFilter<"Field"> | Date | string | null
+  cropStageNotes?: Prisma.StringNullableFilter<"Field"> | string | null
+  userId?: Prisma.StringNullableFilter<"Field"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Field"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Field"> | Date | string
+}
+
 export type FieldCreateWithoutAnalysesInput = {
   id?: string
   name: string
@@ -870,6 +1058,7 @@ export type FieldCreateWithoutAnalysesInput = {
   cropStageNotes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  user?: Prisma.UserCreateNestedOneWithoutFieldsInput
   inspections?: Prisma.InspectionCreateNestedManyWithoutFieldInput
   sprayApplications?: Prisma.SprayApplicationCreateNestedManyWithoutFieldInput
   calendarEvents?: Prisma.CalendarEventCreateNestedManyWithoutFieldInput
@@ -896,6 +1085,7 @@ export type FieldUncheckedCreateWithoutAnalysesInput = {
   manualCropStage?: string | null
   cropStageUpdatedAt?: Date | string | null
   cropStageNotes?: string | null
+  userId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   inspections?: Prisma.InspectionUncheckedCreateNestedManyWithoutFieldInput
@@ -942,6 +1132,7 @@ export type FieldUpdateWithoutAnalysesInput = {
   cropStageNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneWithoutFieldsNestedInput
   inspections?: Prisma.InspectionUpdateManyWithoutFieldNestedInput
   sprayApplications?: Prisma.SprayApplicationUpdateManyWithoutFieldNestedInput
   calendarEvents?: Prisma.CalendarEventUpdateManyWithoutFieldNestedInput
@@ -968,6 +1159,7 @@ export type FieldUncheckedUpdateWithoutAnalysesInput = {
   manualCropStage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cropStageUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cropStageNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   inspections?: Prisma.InspectionUncheckedUpdateManyWithoutFieldNestedInput
@@ -998,6 +1190,7 @@ export type FieldCreateWithoutInspectionsInput = {
   cropStageNotes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  user?: Prisma.UserCreateNestedOneWithoutFieldsInput
   analyses?: Prisma.AnalysisHistoryCreateNestedManyWithoutFieldInput
   sprayApplications?: Prisma.SprayApplicationCreateNestedManyWithoutFieldInput
   calendarEvents?: Prisma.CalendarEventCreateNestedManyWithoutFieldInput
@@ -1024,6 +1217,7 @@ export type FieldUncheckedCreateWithoutInspectionsInput = {
   manualCropStage?: string | null
   cropStageUpdatedAt?: Date | string | null
   cropStageNotes?: string | null
+  userId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   analyses?: Prisma.AnalysisHistoryUncheckedCreateNestedManyWithoutFieldInput
@@ -1070,6 +1264,7 @@ export type FieldUpdateWithoutInspectionsInput = {
   cropStageNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneWithoutFieldsNestedInput
   analyses?: Prisma.AnalysisHistoryUpdateManyWithoutFieldNestedInput
   sprayApplications?: Prisma.SprayApplicationUpdateManyWithoutFieldNestedInput
   calendarEvents?: Prisma.CalendarEventUpdateManyWithoutFieldNestedInput
@@ -1096,6 +1291,7 @@ export type FieldUncheckedUpdateWithoutInspectionsInput = {
   manualCropStage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cropStageUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cropStageNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   analyses?: Prisma.AnalysisHistoryUncheckedUpdateManyWithoutFieldNestedInput
@@ -1126,6 +1322,7 @@ export type FieldCreateWithoutSprayApplicationsInput = {
   cropStageNotes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  user?: Prisma.UserCreateNestedOneWithoutFieldsInput
   analyses?: Prisma.AnalysisHistoryCreateNestedManyWithoutFieldInput
   inspections?: Prisma.InspectionCreateNestedManyWithoutFieldInput
   calendarEvents?: Prisma.CalendarEventCreateNestedManyWithoutFieldInput
@@ -1152,6 +1349,7 @@ export type FieldUncheckedCreateWithoutSprayApplicationsInput = {
   manualCropStage?: string | null
   cropStageUpdatedAt?: Date | string | null
   cropStageNotes?: string | null
+  userId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   analyses?: Prisma.AnalysisHistoryUncheckedCreateNestedManyWithoutFieldInput
@@ -1198,6 +1396,7 @@ export type FieldUpdateWithoutSprayApplicationsInput = {
   cropStageNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneWithoutFieldsNestedInput
   analyses?: Prisma.AnalysisHistoryUpdateManyWithoutFieldNestedInput
   inspections?: Prisma.InspectionUpdateManyWithoutFieldNestedInput
   calendarEvents?: Prisma.CalendarEventUpdateManyWithoutFieldNestedInput
@@ -1224,6 +1423,7 @@ export type FieldUncheckedUpdateWithoutSprayApplicationsInput = {
   manualCropStage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cropStageUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cropStageNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   analyses?: Prisma.AnalysisHistoryUncheckedUpdateManyWithoutFieldNestedInput
@@ -1254,6 +1454,7 @@ export type FieldCreateWithoutCalendarEventsInput = {
   cropStageNotes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  user?: Prisma.UserCreateNestedOneWithoutFieldsInput
   analyses?: Prisma.AnalysisHistoryCreateNestedManyWithoutFieldInput
   inspections?: Prisma.InspectionCreateNestedManyWithoutFieldInput
   sprayApplications?: Prisma.SprayApplicationCreateNestedManyWithoutFieldInput
@@ -1280,6 +1481,7 @@ export type FieldUncheckedCreateWithoutCalendarEventsInput = {
   manualCropStage?: string | null
   cropStageUpdatedAt?: Date | string | null
   cropStageNotes?: string | null
+  userId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   analyses?: Prisma.AnalysisHistoryUncheckedCreateNestedManyWithoutFieldInput
@@ -1326,6 +1528,7 @@ export type FieldUpdateWithoutCalendarEventsInput = {
   cropStageNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneWithoutFieldsNestedInput
   analyses?: Prisma.AnalysisHistoryUpdateManyWithoutFieldNestedInput
   inspections?: Prisma.InspectionUpdateManyWithoutFieldNestedInput
   sprayApplications?: Prisma.SprayApplicationUpdateManyWithoutFieldNestedInput
@@ -1352,11 +1555,120 @@ export type FieldUncheckedUpdateWithoutCalendarEventsInput = {
   manualCropStage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cropStageUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cropStageNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   analyses?: Prisma.AnalysisHistoryUncheckedUpdateManyWithoutFieldNestedInput
   inspections?: Prisma.InspectionUncheckedUpdateManyWithoutFieldNestedInput
   sprayApplications?: Prisma.SprayApplicationUncheckedUpdateManyWithoutFieldNestedInput
+}
+
+export type FieldCreateManyUserInput = {
+  id?: string
+  name: string
+  city: string
+  latitude: number
+  longitude: number
+  crop: string
+  plantingDate: string
+  cropStatus: string
+  monitoredDiseases: string
+  previousCrop?: string | null
+  cropRotation?: boolean | null
+  peanutRepetitionYears?: number | null
+  hadDiseaseIncidence?: boolean | null
+  previousDiseases?: string | null
+  diseaseIncidenceLevel?: string | null
+  historicalPressure?: string | null
+  agronomicHistoryNotes?: string | null
+  manualCropStage?: string | null
+  cropStageUpdatedAt?: Date | string | null
+  cropStageNotes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type FieldUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  crop?: Prisma.StringFieldUpdateOperationsInput | string
+  plantingDate?: Prisma.StringFieldUpdateOperationsInput | string
+  cropStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  monitoredDiseases?: Prisma.StringFieldUpdateOperationsInput | string
+  previousCrop?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cropRotation?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  peanutRepetitionYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  hadDiseaseIncidence?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  previousDiseases?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diseaseIncidenceLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  historicalPressure?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agronomicHistoryNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  manualCropStage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cropStageUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cropStageNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  analyses?: Prisma.AnalysisHistoryUpdateManyWithoutFieldNestedInput
+  inspections?: Prisma.InspectionUpdateManyWithoutFieldNestedInput
+  sprayApplications?: Prisma.SprayApplicationUpdateManyWithoutFieldNestedInput
+  calendarEvents?: Prisma.CalendarEventUpdateManyWithoutFieldNestedInput
+}
+
+export type FieldUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  crop?: Prisma.StringFieldUpdateOperationsInput | string
+  plantingDate?: Prisma.StringFieldUpdateOperationsInput | string
+  cropStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  monitoredDiseases?: Prisma.StringFieldUpdateOperationsInput | string
+  previousCrop?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cropRotation?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  peanutRepetitionYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  hadDiseaseIncidence?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  previousDiseases?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diseaseIncidenceLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  historicalPressure?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agronomicHistoryNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  manualCropStage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cropStageUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cropStageNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  analyses?: Prisma.AnalysisHistoryUncheckedUpdateManyWithoutFieldNestedInput
+  inspections?: Prisma.InspectionUncheckedUpdateManyWithoutFieldNestedInput
+  sprayApplications?: Prisma.SprayApplicationUncheckedUpdateManyWithoutFieldNestedInput
+  calendarEvents?: Prisma.CalendarEventUncheckedUpdateManyWithoutFieldNestedInput
+}
+
+export type FieldUncheckedUpdateManyWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  crop?: Prisma.StringFieldUpdateOperationsInput | string
+  plantingDate?: Prisma.StringFieldUpdateOperationsInput | string
+  cropStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  monitoredDiseases?: Prisma.StringFieldUpdateOperationsInput | string
+  previousCrop?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cropRotation?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  peanutRepetitionYears?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  hadDiseaseIncidence?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  previousDiseases?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diseaseIncidenceLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  historicalPressure?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  agronomicHistoryNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  manualCropStage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cropStageUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cropStageNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -1438,8 +1750,10 @@ export type FieldSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   manualCropStage?: boolean
   cropStageUpdatedAt?: boolean
   cropStageNotes?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  user?: boolean | Prisma.Field$userArgs<ExtArgs>
   analyses?: boolean | Prisma.Field$analysesArgs<ExtArgs>
   inspections?: boolean | Prisma.Field$inspectionsArgs<ExtArgs>
   sprayApplications?: boolean | Prisma.Field$sprayApplicationsArgs<ExtArgs>
@@ -1468,8 +1782,10 @@ export type FieldSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   manualCropStage?: boolean
   cropStageUpdatedAt?: boolean
   cropStageNotes?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  user?: boolean | Prisma.Field$userArgs<ExtArgs>
 }, ExtArgs["result"]["field"]>
 
 export type FieldSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1493,8 +1809,10 @@ export type FieldSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   manualCropStage?: boolean
   cropStageUpdatedAt?: boolean
   cropStageNotes?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  user?: boolean | Prisma.Field$userArgs<ExtArgs>
 }, ExtArgs["result"]["field"]>
 
 export type FieldSelectScalar = {
@@ -1518,24 +1836,31 @@ export type FieldSelectScalar = {
   manualCropStage?: boolean
   cropStageUpdatedAt?: boolean
   cropStageNotes?: boolean
+  userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type FieldOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "city" | "latitude" | "longitude" | "crop" | "plantingDate" | "cropStatus" | "monitoredDiseases" | "previousCrop" | "cropRotation" | "peanutRepetitionYears" | "hadDiseaseIncidence" | "previousDiseases" | "diseaseIncidenceLevel" | "historicalPressure" | "agronomicHistoryNotes" | "manualCropStage" | "cropStageUpdatedAt" | "cropStageNotes" | "createdAt" | "updatedAt", ExtArgs["result"]["field"]>
+export type FieldOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "city" | "latitude" | "longitude" | "crop" | "plantingDate" | "cropStatus" | "monitoredDiseases" | "previousCrop" | "cropRotation" | "peanutRepetitionYears" | "hadDiseaseIncidence" | "previousDiseases" | "diseaseIncidenceLevel" | "historicalPressure" | "agronomicHistoryNotes" | "manualCropStage" | "cropStageUpdatedAt" | "cropStageNotes" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["field"]>
 export type FieldInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.Field$userArgs<ExtArgs>
   analyses?: boolean | Prisma.Field$analysesArgs<ExtArgs>
   inspections?: boolean | Prisma.Field$inspectionsArgs<ExtArgs>
   sprayApplications?: boolean | Prisma.Field$sprayApplicationsArgs<ExtArgs>
   calendarEvents?: boolean | Prisma.Field$calendarEventsArgs<ExtArgs>
   _count?: boolean | Prisma.FieldCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type FieldIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type FieldIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type FieldIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.Field$userArgs<ExtArgs>
+}
+export type FieldIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.Field$userArgs<ExtArgs>
+}
 
 export type $FieldPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Field"
   objects: {
+    user: Prisma.$UserPayload<ExtArgs> | null
     analyses: Prisma.$AnalysisHistoryPayload<ExtArgs>[]
     inspections: Prisma.$InspectionPayload<ExtArgs>[]
     sprayApplications: Prisma.$SprayApplicationPayload<ExtArgs>[]
@@ -1562,6 +1887,7 @@ export type $FieldPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     manualCropStage: string | null
     cropStageUpdatedAt: Date | null
     cropStageNotes: string | null
+    userId: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["field"]>
@@ -1958,6 +2284,7 @@ readonly fields: FieldFieldRefs;
  */
 export interface Prisma__FieldClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  user<T extends Prisma.Field$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Field$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   analyses<T extends Prisma.Field$analysesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Field$analysesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnalysisHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   inspections<T extends Prisma.Field$inspectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Field$inspectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InspectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sprayApplications<T extends Prisma.Field$sprayApplicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Field$sprayApplicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SprayApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2011,6 +2338,7 @@ export interface FieldFieldRefs {
   readonly manualCropStage: Prisma.FieldRef<"Field", 'String'>
   readonly cropStageUpdatedAt: Prisma.FieldRef<"Field", 'DateTime'>
   readonly cropStageNotes: Prisma.FieldRef<"Field", 'String'>
+  readonly userId: Prisma.FieldRef<"Field", 'String'>
   readonly createdAt: Prisma.FieldRef<"Field", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Field", 'DateTime'>
 }
@@ -2265,6 +2593,10 @@ export type FieldCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extension
    * The data used to create many Fields.
    */
   data: Prisma.FieldCreateManyInput | Prisma.FieldCreateManyInput[]
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FieldIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -2335,6 +2667,10 @@ export type FieldUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many Fields to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FieldIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -2401,6 +2737,25 @@ export type FieldDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Limit how many Fields to delete.
    */
   limit?: number
+}
+
+/**
+ * Field.user
+ */
+export type Field$userArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**
